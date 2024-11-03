@@ -54,7 +54,6 @@ public class AuthController {
         if (StringUtils.isNotBlank(DashboardConfig.getAuthUsername())) {
             authUsername = DashboardConfig.getAuthUsername();
         }
-
         if (StringUtils.isNotBlank(DashboardConfig.getAuthPassword())) {
             authPassword = DashboardConfig.getAuthPassword();
         }

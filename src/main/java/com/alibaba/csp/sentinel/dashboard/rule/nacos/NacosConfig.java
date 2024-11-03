@@ -28,6 +28,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.Properties;
 
+import static com.alibaba.nacos.client.utils.EnvUtil.LOGGER;
+
 /**
  * @author Eric Zhao
  * @since 1.4.0
@@ -52,6 +54,8 @@ public class NacosConfig {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SERVER_ADDR, nacosPropertiesConfiguration.getServerAddr());
         properties.put(PropertyKeyConst.NAMESPACE, nacosPropertiesConfiguration.getNamespace());
+        LOGGER.info("nacosPropertiesConfiguration.getServerAddr() = {}", nacosPropertiesConfiguration.getServerAddr());
+        LOGGER.info("nacosPropertiesConfiguration.getNamespace() = {}", nacosPropertiesConfiguration.getNamespace());
         return ConfigFactory.createConfigService(properties);
     }
 }
