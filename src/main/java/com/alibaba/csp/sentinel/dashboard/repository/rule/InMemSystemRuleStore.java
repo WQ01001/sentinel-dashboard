@@ -15,10 +15,12 @@
  */
 package com.alibaba.csp.sentinel.dashboard.repository.rule;
 
+import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.SystemRuleEntity;
 
+import com.alibaba.nacos.common.utils.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +33,17 @@ public class InMemSystemRuleStore extends InMemoryRuleRepositoryAdapter<SystemRu
 
     @Override
     protected long nextId() {
+        return ids.incrementAndGet();
+    }
+
+    @Override
+    protected long nextId(SystemRuleEntity entity) {
+        if (ids.intValue() == 0) { //如果是重启后 且存在已有规则则赋值为最大id+1
+            if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
+                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(SystemRuleEntity::getId)).get().getId();
+                ids.set(maxId);
+            }
+        }
         return ids.incrementAndGet();
     }
 }
