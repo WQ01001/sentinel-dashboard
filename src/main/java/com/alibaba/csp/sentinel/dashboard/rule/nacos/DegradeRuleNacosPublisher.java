@@ -15,6 +15,7 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.datasource.Converter;
@@ -31,23 +32,23 @@ import java.util.List;
  * @author Eric Zhao
  * @since 1.4.0
  */
-@Component("flowRuleNacosPublisher")
-public class FlowRuleNacosPublisher implements DynamicRulePublisher<List<FlowRuleEntity>> {
+@Component("degradeRuleNacosPublisher")
+public class DegradeRuleNacosPublisher implements DynamicRulePublisher<List<DegradeRuleEntity>> {
 
     @Autowired
     private ConfigService configService;
     @Autowired
-    private Converter<List<FlowRuleEntity>, String> converter;
+    private Converter<List<DegradeRuleEntity>, String> converter;
 
     @Override
-    public void publish(String app, List<FlowRuleEntity> rules) throws Exception {
+    public void publish(String app, List<DegradeRuleEntity> rules) throws Exception {
         AssertUtil.notEmpty(app, "app name cannot be empty");
         if (rules == null) {
             return;
         }
         // 美化xxx-flow-rules.yml配置中的格式
         String prettyFormat = toPrettyFormat(JSONArray.toJSONString(rules));
-        configService.publishConfig(app + NacosConfigUtil.FLOW_DATA_ID_POSTFIX,
+        configService.publishConfig(app + NacosConfigUtil.DEGRADE_DATA_ID_POSTFIX,
                 NacosConfigUtil.GROUP_ID, prettyFormat, converter.convert(rules));
     }
 

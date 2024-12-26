@@ -15,7 +15,9 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.PropertyKeyConst;
@@ -50,10 +52,32 @@ public class NacosConfig {
     }
 
     @Bean
+    public Converter<List<DegradeRuleEntity>, String> degradeRuleEntityEncoder() {
+        return JSON::toJSONString;
+    }
+
+    @Bean
+    public Converter<String, List<DegradeRuleEntity>> degradeRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, DegradeRuleEntity.class);
+    }
+
+    @Bean
+    public Converter<List<ParamFlowRuleEntity>, String> paramFlowRuleEntityEncoder() {
+        return JSON::toJSONString;
+    }
+
+    @Bean
+    public Converter<String, List<ParamFlowRuleEntity>> paramFlowRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, ParamFlowRuleEntity.class);
+    }
+
+
+    @Bean
     public ConfigService nacosConfigService(NacosPropertiesConfiguration nacosPropertiesConfiguration) throws Exception {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SERVER_ADDR, nacosPropertiesConfiguration.getServerAddr());
         properties.put(PropertyKeyConst.NAMESPACE, nacosPropertiesConfiguration.getNamespace());
+        properties.put("groupId", nacosPropertiesConfiguration.getGroupId());
         LOGGER.info("nacosPropertiesConfiguration.getServerAddr() = {}", nacosPropertiesConfiguration.getServerAddr());
         LOGGER.info("nacosPropertiesConfiguration.getNamespace() = {}", nacosPropertiesConfiguration.getNamespace());
         return ConfigFactory.createConfigService(properties);
