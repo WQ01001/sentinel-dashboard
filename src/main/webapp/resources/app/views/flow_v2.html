@@ -4,10 +4,10 @@
   </div>
   <div class="col-md-6">
     <button class="btn btn-default-inverse" style="float: right; margin-right: 10px;" ng-click="addNewRule()">
-      <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Flow Control Rule
+      <i class="fa fa-plus"></i>&nbsp;&nbsp;新增流控规则
     </button>
     <a class="btn btn-default-inverse" style="float: right; margin-right: 10px;" ui-sref="dashboard.flowV1({app: app})">
-      Back to Single Machine Page
+      回到单机页面
     </a>
   </div>
 </div>
@@ -19,8 +19,8 @@
     <div class="col-md-12">
       <div class="card">
         <div class="inputs-header">
-          <span class="brand" style="font-size: 13px;">Flow Control Rules</span>
-          <input class="form-control witdh-200" placeholder="Keyword" ng-model="searchKey">
+          <span class="brand" style="font-size: 13px;">流控规则</span>
+          <input class="form-control witdh-200" placeholder="关键字" ng-model="searchKey">
         </div>
 
         <!--.tools-header -->
@@ -29,28 +29,28 @@
             <thead>
               <tr style="background: #F3F5F7;">
                 <td style="width: 40%">
-                  Resource Name
+                  资源名
                 </td>
                 <td style="width: 10%;">
-                  Source App
+                  来源应用
                 </td>
                 <td style="width: 8%;">
-                  Control Mode
+                  流控模式
                 </td>
                 <td style="width: 8%;">
-                  Threshold Type
+                  阈值类型
                 </td>
                 <td style="width: 8%;">
-                  Threshold
+                  阈值
                 </td>
                 <td style="width: 8%;">
-                  Threshold Mode
+                  阈值模式
                 </td>
                 <td style="width: 8%;">
-                  Control Effect
+                  流控效果
                 </td>
                 <td style="width: 12%;">
-                  Actions
+                  操作
                 </td>
               </tr>
             </thead>
@@ -60,12 +60,12 @@
                 <td style="word-wrap:break-word;word-break:break-all;">{{rule.resource}}</td>
                 <td style="word-wrap:break-word;word-break:break-all;">{{rule.limitApp }}</td>
                 <td>
-                  <span ng-if="rule.strategy == 0">Direct</span>
-                  <span ng-if="rule.strategy == 1">Related</span>
-                  <span ng-if="rule.strategy == 2">Chain</span>
+                  <span ng-if="rule.strategy == 0">直接</span>
+                  <span ng-if="rule.strategy == 1">关联</span>
+                  <span ng-if="rule.strategy == 2">链路</span>
                 </td>
                 <td>
-                  {{rule.grade == 0 ? 'Thread Count' : 'QPS'}}
+                  {{rule.grade == 0 ? '线程数' : 'QPS'}}
                 </td>
                 <td style="word-wrap:break-word;word-break:break-all;">
                   {{rule.count}}
@@ -74,14 +74,14 @@
                   <span>{{generateThresholdTypeShow(rule)}}</span>
                 </td>
                 <td>
-                  <span ng-if="rule.controlBehavior == 0">Fast Fail</span>
+                  <span ng-if="rule.controlBehavior == 0">快速失败</span>
                   <span ng-if="rule.controlBehavior == 1">Warm Up</span>
-                  <span ng-if="rule.controlBehavior == 2">Queue Wait</span>
-                  <span ng-if="rule.controlBehavior == 3">Warm Up Queue</span>
+                  <span ng-if="rule.controlBehavior == 2">排队等待</span>
+                  <span ng-if="rule.controlBehavior == 3">预热排队</span>
                 </td>
                 <td>
-                  <button class="btn btn-xs btn-default" type="button" ng-click="editRule(rule)" style="font-size: 12px; height:25px;">Edit</button>
-                  <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(rule)" style="font-size: 12px; height:25px;">Delete</button>
+                  <button class="btn btn-xs btn-default" type="button" ng-click="editRule(rule)" style="font-size: 12px; height:25px;">编辑</button>
+                  <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(rule)" style="font-size: 12px; height:25px;">删除</button>
                 </td>
               </tr>
             </tbody>
@@ -92,13 +92,13 @@
           <dir-pagination-controls boundary-links="true" template-url="app/views/pagination.tpl.html" pagination-id="entriesPagination"
             on-page-change="">
           </dir-pagination-controls>
-          <div class="tools">
-            <span>Total {{rulesPageConfig.totalCount}} records, </span>
+          <div class="tools" style="">
+            <span>共 {{rulesPageConfig.totalCount}} 条记录, </span>
             <span>
-              Records per page
-              <input class="form-control" ng-model="rulesPageConfig.pageSize">
+              每页
+              <input class="form-control" ng-model="rulesPageConfig.pageSize"> 条记录
             </span>
-            <!--<span>Page {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}}</span>-->
+            <!--<span>第 {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}} 页</span>-->
           </div>
           <!-- .tools -->
         </div>
