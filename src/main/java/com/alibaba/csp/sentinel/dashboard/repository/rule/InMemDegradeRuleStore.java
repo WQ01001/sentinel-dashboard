@@ -18,11 +18,10 @@ package com.alibaba.csp.sentinel.dashboard.repository.rule;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.AuthorityRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
-
-import com.alibaba.nacos.common.utils.CollectionUtils;
 import org.springframework.stereotype.Component;
+
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
+import com.alibaba.nacos.common.utils.CollectionUtils;
 
 /**
  * @author leyou

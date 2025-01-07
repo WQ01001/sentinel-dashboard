@@ -25,11 +25,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.alibaba.csp.sentinel.cluster.ClusterStateManager;
-import com.alibaba.csp.sentinel.dashboard.domain.cluster.state.ClusterUniversalStatePairVO;
-import com.alibaba.csp.sentinel.util.AssertUtil;
-import com.alibaba.csp.sentinel.util.function.Tuple2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.alibaba.csp.sentinel.cluster.ClusterStateManager;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.ClusterAppAssignResultVO;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.ClusterGroupEntity;
@@ -37,11 +38,10 @@ import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ClusterClientCon
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerFlowConfig;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportConfig;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.request.ClusterAppAssignMap;
+import com.alibaba.csp.sentinel.dashboard.domain.cluster.state.ClusterUniversalStatePairVO;
 import com.alibaba.csp.sentinel.dashboard.util.MachineUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.alibaba.csp.sentinel.util.AssertUtil;
+import com.alibaba.csp.sentinel.util.function.Tuple2;
 
 /**
  * @author Eric Zhao
@@ -128,7 +128,12 @@ public class ClusterAssignServiceImpl implements ClusterAssignService {
     @Override
     public ClusterAppAssignResultVO unbindClusterServers(String app, Set<String> machineIdSet) {
         AssertUtil.assertNotBlank(app, "app cannot be blank");
-        AssertUtil.isTrue(machineIdSet != null && !machineIdSet.isEmpty(), "machineIdSet cannot be empty");
+        if (machineIdSet == null) {
+            return new ClusterAppAssignResultVO()
+                .setFailedClientSet(new HashSet<>())
+                .setFailedServerSet(new HashSet<>());
+        }
+        AssertUtil.isTrue(!machineIdSet.isEmpty(), "machineIdSet cannot be empty");
         ClusterAppAssignResultVO result = new ClusterAppAssignResultVO()
             .setFailedClientSet(new HashSet<>())
             .setFailedServerSet(new HashSet<>());

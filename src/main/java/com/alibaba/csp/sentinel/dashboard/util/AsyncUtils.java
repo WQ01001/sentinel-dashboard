@@ -64,7 +64,7 @@ public final class AsyncUtils {
         return null;
     }
 
-    public static boolean isSuccessFuture(CompletableFuture future) {
+    public static boolean isSuccessFuture(CompletableFuture<?> future) {
         return future.isDone() && !future.isCompletedExceptionally() && !future.isCancelled();
     }
 
