@@ -13,7 +13,7 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
     $scope.totalPage = 1;
     $scope.totalCount = 0;
     $scope.identities = [];
-    // 数据自动刷新频率, 默认10s
+    // Default data refresh interval: 10s
     var DATA_REFRESH_INTERVAL = 30;
 
     $scope.isExpand = true;
@@ -62,15 +62,12 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
       };
 
       flowRuleDialogScope.flowRuleDialog = {
-        title: '新增流控规则',
+        title: 'Add Flow Control Rule',
         type: 'add',
-        confirmBtnText: '新增',
-        saveAndContinueBtnText: '新增并继续添加',
+        confirmBtnText: 'Add',
+        saveAndContinueBtnText: 'Add and Continue',
         showAdvanceButton: true
       };
-      // $scope.flowRuleDialog = {
-      //     showAdvanceButton : true
-      // };
       flowRuleDialogScope.saveRule = saveFlowRule;
       flowRuleDialogScope.saveRuleAndContinue = saveFlowRuleAndContinue;
       flowRuleDialogScope.onOpenAdvanceClick = function () {
@@ -98,10 +95,10 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
           let url = '/dashboard/flow/' + $scope.app;
           $location.path(url);
         } else {
-          alert('失败：' + data.msg);
+          alert('Failed: ' + data.msg);
         }
       }).error((data, header, config, status) => {
-          alert('未知错误');
+          alert('Unknown error');
       });
     }
 
@@ -113,7 +110,7 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
         if (data.code === 0) {
           flowRuleDialog.close();
         } else {
-            alert('失败：' + data.msg);
+            alert('Failed: ' + data.msg);
         }
       });
     }
@@ -140,10 +137,10 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
       };
 
       degradeRuleDialogScope.degradeRuleDialog = {
-        title: '新增熔断规则',
+        title: 'Add Circuit Breaking Rule',
         type: 'add',
-        confirmBtnText: '新增',
-        saveAndContinueBtnText: '新增并继续添加'
+        confirmBtnText: 'Add',
+        saveAndContinueBtnText: 'Add and Continue'
       };
       degradeRuleDialogScope.saveRule = saveDegradeRule;
       degradeRuleDialogScope.saveRuleAndContinue = saveDegradeRuleAndContinue;
@@ -166,7 +163,7 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
           var url = '/dashboard/degrade/' + $scope.app;
           $location.path(url);
         } else {
-          alert('失败：' + data.msg);
+          alert('Failed: ' + data.msg);
         }
       });
     }
@@ -179,7 +176,7 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
         if (data.code === 0) {
           degradeRuleDialog.close();
         } else {
-            alert('失败：' + data.msg);
+            alert('Failed: ' + data.msg);
         }
       });
     }
@@ -198,13 +195,13 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
                   let url = '/dashboard/authority/' + $scope.app;
                   $location.path(url);
               } else {
-                  alert('添加规则失败：' + data.msg);
+                  alert('Failed to add rule: ' + data.msg);
               }
           }).error((data) => {
               if (data) {
-                  alert('添加规则失败：' + data.msg);
+                  alert('Failed to add rule: ' + data.msg);
               } else {
-                  alert("添加规则失败：未知错误");
+                  alert("Failed to add rule: Unknown error");
               }
           });
       }
@@ -218,13 +215,13 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
               if (data.success) {
                   authorityRuleDialog.close();
               } else {
-                  alert('添加规则失败：' + data.msg);
+                  alert('Failed to add rule: ' + data.msg);
               }
           }).error((data) => {
               if (data) {
-                  alert('添加规则失败：' + data.msg);
+                  alert('Failed to add rule: ' + data.msg);
               } else {
-                  alert("添加规则失败：未知错误");
+                  alert("Failed to add rule: Unknown error");
               }
           });
       }
@@ -247,10 +244,10 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
           };
 
           authorityRuleDialogScope.authorityRuleDialog = {
-              title: '新增授权规则',
+              title: 'Add Authority Rule',
               type: 'add',
-              confirmBtnText: '新增',
-              saveAndContinueBtnText: '新增并继续添加'
+              confirmBtnText: 'Add',
+              saveAndContinueBtnText: 'Add and Continue'
           };
           authorityRuleDialogScope.saveRule = saveAuthorityRule;
           authorityRuleDialogScope.saveRuleAndContinue = saveAuthorityRuleAndContinue;
@@ -277,13 +274,13 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
                   let url = '/dashboard/paramFlow/' + $scope.app;
                   $location.path(url);
               } else {
-                  alert('添加热点规则失败：' + data.msg);
+                  alert('Failed to add hotspot rule: ' + data.msg);
               }
           }).error((data) => {
               if (data) {
-                  alert('添加热点规则失败：' + data.msg);
+                  alert('Failed to add hotspot rule: ' + data.msg);
               } else {
-                  alert("添加热点规则失败：未知错误");
+                  alert("Failed to add hotspot rule: Unknown error");
               }
           });
       }
@@ -297,13 +294,13 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
               if (data.success) {
                   paramFlowRuleDialog.close();
               } else {
-                  alert('添加热点规则失败：' + data.msg);
+                  alert('Failed to add hotspot rule: ' + data.msg);
               }
           }).error((data) => {
               if (data) {
-                  alert('添加热点规则失败：' + data.msg);
+                  alert('Failed to add hotspot rule: ' + data.msg);
               } else {
-                  alert("添加热点规则失败：未知错误");
+                  alert("Failed to add hotspot rule: Unknown error");
               }
           });
       }
@@ -337,21 +334,15 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
           };
 
           paramFlowRuleDialogScope.paramFlowRuleDialog = {
-              title: '新增热点规则',
+              title: 'Add Hotspot Rule',
               type: 'add',
-              confirmBtnText: '新增',
-              saveAndContinueBtnText: '新增并继续添加',
+              confirmBtnText: 'Add',
+              saveAndContinueBtnText: 'Add and Continue',
               supportAdvanced: false,
               showAdvanceButton: true
           };
           paramFlowRuleDialogScope.saveRule = saveParamFlowRule;
           paramFlowRuleDialogScope.saveRuleAndContinue = saveParamFlowRuleAndContinue;
-          // paramFlowRuleDialogScope.onOpenAdvanceClick = function () {
-          //     paramFlowRuleDialogScope.paramFlowRuleDialog.showAdvanceButton = false;
-          // };
-          // paramFlowRuleDialogScope.onCloseAdvanceClick = function () {
-          //     paramFlowRuleDialogScope.paramFlowRuleDialog.showAdvanceButton = true;
-          // };
 
           paramFlowRuleDialog = ngDialog.open({
               template: '/app/views/dialog/param-flow-rule-dialog.html',
@@ -374,10 +365,8 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
     };
 
     $scope.initTreeTable = function () {
-      // if (!$scope.table) {
-        com_github_culmat_jsTreeTable.register(window);
-        $scope.table = window.treeTable($('#identities'));
-      // }
+      com_github_culmat_jsTreeTable.register(window);
+      $scope.table = window.treeTable($('#identities'));
     };
 
     $scope.expandAll = function () {
@@ -436,11 +425,7 @@ app.controller('IdentityCtl', ['$scope', '$stateParams', 'IdentityService',
 
     var intervalId;
     function reInitIdentityDatas() {
-      // $interval.cancel(intervalId);
       queryIdentities();
-      // intervalId = $interval(function () {
-      //    queryIdentities();
-      // }, DATA_REFRESH_INTERVAL * 1000);
     };
 
     function queryIdentities() {

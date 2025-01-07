@@ -81,7 +81,7 @@ app.service('FlowServiceV1', ['$http', function ($http) {
 
     this.checkRuleValid = function (rule) {
         if (rule.resource === undefined || rule.resource === '') {
-            alert('资源名称不能为空');
+            alert('Resource Name称不能为空');
             return false;
         }
         if (rule.count === undefined || rule.count < 0) {

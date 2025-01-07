@@ -40,7 +40,7 @@ angular.module('sentinelDashboardApp').service('AuthorityRuleService', ['$http',
 
     this.checkRuleValid = function checkRuleValid(rule) {
         if (rule.resource === undefined || rule.resource === '') {
-            alert('资源名称不能为空');
+            alert('Resource Name称不能为空');
             return false;
         }
         if (rule.limitApp === undefined || rule.limitApp === '') {

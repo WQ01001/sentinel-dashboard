@@ -172,7 +172,7 @@ angular.module('sentinelDashboardApp').controller('AuthorityRuleController', ['$
                 title: '删除授权规则',
                 type: 'delete_rule',
                 attentionTitle: '请确认是否删除如下授权限流规则',
-                attention: '资源名: ' + ruleEntity.rule.resource + ', 流控应用: ' + ruleEntity.rule.limitApp +
+                attention: 'Resource Name: ' + ruleEntity.rule.resource + ', 流控应用: ' + ruleEntity.rule.limitApp +
                     ', 类型: ' + (ruleEntity.rule.strategy === 0 ? '白名单' : '黑名单'),
                 confirmBtnText: '删除',
             };

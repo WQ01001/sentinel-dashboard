@@ -74,7 +74,7 @@ angular.module('sentinelDashboardApp').service('ParamFlowService', ['$http', fun
 
   this.checkRuleValid = function (rule) {
       if (!rule.resource || rule.resource === '') {
-          alert('资源名称不能为空');
+          alert('Resource Name称不能为空');
           return false;
       }
       if (rule.grade != 1) {

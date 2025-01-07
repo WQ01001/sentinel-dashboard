@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-6" ng-if="!loadError">
       <button class="btn btn-default-inverse" style="float: right; margin-right: 10px;" ng-disabled="!macInputModel" ng-click="addNewRule()">
-        <i class="fa fa-plus"></i>&nbsp;&nbsp;新增热点限流规则</button>
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Hot Param Flow Rule</button>
     </div>
   </div>
   
@@ -15,12 +15,12 @@
       <div class="col-md-12">
         <div class="card">
           <div class="inputs-header">
-            <span class="brand" style="font-size: 13px;">热点参数限流规则</span>
-            <button class="btn btn-primary" style="float: right; margin-right: 10px; height: 30px;font-size: 12px;" ng-click="getMachineRules()">刷新</button>
-            <input class="form-control witdh-200" placeholder="关键字" ng-model="searchKey">
+            <span class="brand" style="font-size: 13px;">Hot Parameter Flow Rules</span>
+            <button class="btn btn-primary" style="float: right; margin-right: 10px; height: 30px;font-size: 12px;" ng-click="getMachineRules()">Refresh</button>
+            <input class="form-control witdh-200" placeholder="Search" ng-model="searchKey">
             <div class="control-group" style="float:right;margin-right: 10px;margin-bottom: -10px;">
               <selectize id="gsInput" class="selectize-input-200" config="macsInputConfig" options="macsInputOptions" ng-model="macInputModel"
-                placeholder="机器"></selectize>
+                placeholder="Machine"></selectize>
             </div>
           </div>
 
@@ -44,25 +44,25 @@
                         <thead>
                         <tr style="background: #F3F5F7;">
                             <td style="width: 40%">
-                                资源名
+                                Resource Name
                             </td>
                             <td style="width: 10%;">
-                                参数索引
+                                Parameter Index
                             </td>
                             <td style="width: 10%;">
-                                流控模式
+                                Control Mode
                             </td>
                             <td style="width: 10%;">
-                                阈值
+                                Threshold
                             </td>
                             <td style="width: 8%;">
-                                是否集群
+                                Cluster Mode
                             </td>
                             <td style="width: 10%;">
-                                例外项数目
+                                Exception Items
                             </td>
                             <td style="width: 12%;">
-                                操作
+                                Actions
                             </td>
                         </tr>
                         </thead>
@@ -72,21 +72,21 @@
                             <td style="word-wrap:break-word;word-break:break-all;">{{ruleEntity.rule.resource}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{ruleEntity.rule.paramIdx}}</td>
                             <td>
-                                {{ruleEntity.rule.grade == 1 ? 'QPS' : '未知'}}
+                                {{ruleEntity.rule.grade == 1 ? 'QPS' : 'Unknown'}}
                             </td>
                             <td style="word-wrap:break-word;word-break:break-all;">
                                 {{ruleEntity.rule.count}}
                             </td>
                             <td>
-                                <span ng-if="ruleEntity.rule.clusterMode">是</span>
-                                <span ng-if="!ruleEntity.rule.clusterMode">否</span>
+                                <span ng-if="ruleEntity.rule.clusterMode">Yes</span>
+                                <span ng-if="!ruleEntity.rule.clusterMode">No</span>
                             </td>
                             <td>
                                 {{ruleEntity.rule.paramFlowItemList == undefined ? 0 : ruleEntity.rule.paramFlowItemList.length}}
                             </td>
                             <td>
-                                <button class="btn btn-xs btn-default" type="button" ng-click="editRule(ruleEntity)" style="font-size: 12px; height:25px;">编辑</button>
-                                <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(ruleEntity)" style="font-size: 12px; height:25px;">删除</button>
+                                <button class="btn btn-xs btn-default" type="button" ng-click="editRule(ruleEntity)" style="font-size: 12px; height:25px;">Edit</button>
+                                <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(ruleEntity)" style="font-size: 12px; height:25px;">Delete</button>
                             </td>
                         </tr>
                         </tbody>
@@ -98,9 +98,9 @@
                                              on-page-change="">
                     </dir-pagination-controls>
                     <div class="tools" style="">
-                        <span>共 {{rulesPageConfig.totalCount}} 条记录, </span>
-                        <span>每页 <input class="form-control" ng-model="rulesPageConfig.pageSize"> 条记录</span>
-                        <!--<span>第 {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}} 页</span>-->
+                        <span>Total {{rulesPageConfig.totalCount}} records, </span>
+                        <span>Show <input class="form-control" ng-model="rulesPageConfig.pageSize"> items per page</span>
+                        <!--<span>Page {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}}</span>-->
                     </div>
                     <!-- .tools -->
                 </div>
@@ -115,4 +115,3 @@
     <!-- -->
   </div>
   <!-- .container-fluid -->
-  

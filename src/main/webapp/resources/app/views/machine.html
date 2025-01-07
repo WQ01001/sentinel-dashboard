@@ -4,33 +4,28 @@
   </div>
 </div>
 
-<!--<div>-->
-<!--<span>实例总数 {{machines.length}}, 健康 {{healthyCount}}, 失联 {{machines.length-healthyCount}}</span>-->
-<!--</div>-->
-
 <div class="separator"></div>
 <div class="container-fluid">
   <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
     <div class="col-md-12">
       <div class="card">
         <div class="inputs-header">
-          <span class="brand" style="font-size: 13px;">机器列表</span>
-          <span>实例总数 {{machines.length}}, 健康 {{healthyCount}}, 失联 {{machines.length - healthyCount}}.</span>
-          <input class="form-control width-300" placeholder="关键字" ng-model="searchKey">
+          <span class="brand" style="font-size: 13px;">Machine List</span>
+          <span>Total instances {{machines.length}}, Healthy {{healthyCount}}, Unreachable {{machines.length - healthyCount}}.</span>
+          <input class="form-control width-300" placeholder="Search" ng-model="searchKey">
         </div>
 
-        <!--.tools-header -->
         <div class="card-body" style="padding: 0px 0px;">
           <table class="table" style="border-left: none; border-right:none;margin-top: 10px;">
             <thead>
               <tr style="background: #F3F5F7;">
-                <td>机器名</td>
-                <td>IP 地址</td>
-                <td>端口号</td>
-                <td>Sentinel 客户端版本</td>
-                <td>健康状态</td>
-                <td>心跳时间</td>
-                <td>操作</td>
+                <td>Hostname</td>
+                <td>IP Address</td>
+                <td>Port</td>
+                <td>Sentinel Client Version</td>
+                <td>Health Status</td>
+                <td>Heartbeat Time</td>
+                <td>Actions</td>
               </tr>
             </thead>
             <tbody>
@@ -40,11 +35,11 @@
                 <td style="word-wrap:break-word;word-break:break-all;">{{entry.ip}}</td>
                 <td> {{entry.port}} </td>
                 <td> {{entry.version}} </td>
-                <td ng-if="entry.healthy">健康</td>
-                <td ng-if="!entry.healthy" style="color: red">失联</td>
+                <td ng-if="entry.healthy">Healthy</td>
+                <td ng-if="!entry.healthy" style="color: red">Unreachable</td>
                 <td>{{entry.lastHeartbeat | date: 'yyyy/MM/dd HH:mm:ss'}}</td>
                 <td>
-                    <button ng-if="!entry.healthy" class="btn btn-xs btn-outline-danger" style="height: 25px; font-size: 12px;" ng-click="removeMachine(entry.ip, entry.port)">移除</button>
+                    <button ng-if="!entry.healthy" class="btn btn-xs btn-outline-danger" style="height: 25px; font-size: 12px;" ng-click="removeMachine(entry.ip, entry.port)">Remove</button>
                 </td>
               </tr>
             </tbody>
@@ -56,12 +51,12 @@
             on-page-change="">
           </dir-pagination-controls>
           <div class="tools" style="">
-            <span>共 {{machinesPageConfig.totalCount}} 条记录, </span>
+            <span>Total {{machinesPageConfig.totalCount}} records, </span>
             <span>
-              每页
-              <input class="form-control" ng-model="machinesPageConfig.pageSize"> 条记录,
+              Show
+              <input class="form-control" ng-model="machinesPageConfig.pageSize"> records per page,
             </span>
-            <span>第 {{machinesPageConfig.currentPageIndex}} / {{machinesPageConfig.totalPage}} 页</span>
+            <span>Page {{machinesPageConfig.currentPageIndex}} / {{machinesPageConfig.totalPage}}</span>
           </div>
           <!-- .tools -->
         </div>
