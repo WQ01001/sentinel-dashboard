@@ -13,9 +13,9 @@
 								<input type="radio" ng-if="gatewayFlowRuleDialog.type == 'add'" value="0" checked ng-model='currentRule.resourceMode'
 											 title="Route ID" ng-click="useRouteID()"/><span ng-if="gatewayFlowRuleDialog.type == 'add'">&nbsp;Route ID&nbsp;&nbsp;</span>
 								<input type="radio" ng-if="gatewayFlowRuleDialog.type == 'edit'" value="1" ng-model='currentRule.resourceMode'
-											 disabled="" title="API Group" /><span ng-if="gatewayFlowRuleDialog.type == 'edit'">&nbsp;API Group&nbsp&nbsp;</span>
+											 disabled="" title="API Group" /><span ng-if="gatewayFlowRuleDialog.type == 'edit'">&nbsp;API Group&nbsp;&nbsp;</span>
 								<input type="radio" ng-if="gatewayFlowRuleDialog.type == 'add'" value="1" ng-model='currentRule.resourceMode'
-											 title="API Group" ng-click="useCustormAPI()"/><span ng-if="gatewayFlowRuleDialog.type == 'add'">&nbsp;API Group&nbsp&nbsp;</span>
+											 title="API Group" ng-click="useCustormAPI()"/><span ng-if="gatewayFlowRuleDialog.type == 'add'">&nbsp;API Group&nbsp;&nbsp;</span>
 							</div>
 						</div>
 					</div>
@@ -136,14 +136,14 @@
 						<div class="col-sm-9">
 							<div class="form-control highlight-border" align="center">
 								<input type="radio" name="controlBehavior" value="0" checked ng-model='currentRule.controlBehavior' title="Quick Fail" />&nbsp;Quick Fail&nbsp;&nbsp;
-								<input type="radio" name="controlBehavior" value="2" ng-model='currentRule.controlBehavior' title="Rate Limiter" />&nbsp;Rate Limiter&nbsp&nbsp;
+								<input type="radio" name="controlBehavior" value="2" ng-model='currentRule.controlBehavior' title="Rate Limiter" />&nbsp;Rate Limiter&nbsp;&nbsp;
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group" ng-if="currentRule.grade==1 && currentRule.controlBehavior==0">
 						<div>
-							<label class="col-sm-2 control-label">Burst size</label>
+							<label class="col-sm-2 control-label">Burst Size</label>
 							<div class="col-sm-3">
 								<input type='number' min="0" class="form-control highlight-border" ng-model='currentRule.burst' placeholder="Additional requests allowed for burst" />
 							</div>
