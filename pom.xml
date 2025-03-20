@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
-<!--            <scope>test</scope>-->
+            <!--            <scope>test</scope>-->
         </dependency>
         <!-- for Apollo rule publisher sample -->
         <dependency>
@@ -118,6 +118,12 @@
             <version>${curator.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--  for Redis rule  publisher     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -130,10 +136,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>com.github.stefanbirkner</groupId>
-        	<artifactId>system-rules</artifactId>
-        	<version>1.16.1</version>
-        	<scope>test</scope>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
+            <version>1.16.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -60,10 +60,10 @@ public class ParamFlowRuleController {
     private RuleRepository<ParamFlowRuleEntity, Long> repository;
 
     @Autowired
-    @Qualifier("paramFlowRuleNacosProvider")
+    @Qualifier("paramFlowRuleRedisProvider")
     private DynamicRuleProvider<List<ParamFlowRuleEntity>> ruleProvider;
     @Autowired
-    @Qualifier("paramFlowRuleNacosPublisher")
+    @Qualifier("paramFlowRuleRedisPublisher")
     private DynamicRulePublisher<List<ParamFlowRuleEntity>> rulePublisher;
 
     private boolean checkIfSupported(String app, String ip, int port) {

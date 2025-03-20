@@ -57,10 +57,10 @@ public class DegradeController {
     private AppManagement appManagement;
 
     @Autowired
-    @Qualifier("degradeRuleNacosProvider")
+    @Qualifier("degradeRuleRedisProvider")
     private DynamicRuleProvider<List<DegradeRuleEntity>> ruleProvider;
     @Autowired
-    @Qualifier("degradeRuleNacosPublisher")
+    @Qualifier("degradeRuleRedisPublisher")
     private DynamicRulePublisher<List<DegradeRuleEntity>> rulePublisher;
 
     @GetMapping("/rules.json")
