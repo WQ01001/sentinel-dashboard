@@ -18,12 +18,11 @@ package com.alibaba.csp.sentinel.dashboard.repository.rule;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.SystemRuleEntity;
-import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowClusterConfig;
-
-import com.alibaba.nacos.common.utils.CollectionUtils;
 import org.springframework.stereotype.Component;
+
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowClusterConfig;
+import com.alibaba.nacos.common.utils.CollectionUtils;
 
 /**
  * @author Eric Zhao
@@ -41,9 +40,10 @@ public class InMemParamFlowRuleStore extends InMemoryRuleRepositoryAdapter<Param
 
     @Override
     protected long nextId(ParamFlowRuleEntity entity) {
-        if (ids.intValue() == 0) { //如果是重启后 且存在已有规则则赋值为最大id+1
+        if (ids.intValue() == 0) { // 如果是重启后 且存在已有规则则赋值为最大id+1
             if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
-                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(ParamFlowRuleEntity::getId)).get().getId();
+                long maxId = this.findAllByApp(entity.getApp()).stream()
+                        .max(Comparator.comparingLong(ParamFlowRuleEntity::getId)).get().getId();
                 ids.set(maxId);
             }
         }

@@ -1,21 +1,29 @@
-FROM amd64/buildpack-deps:buster-curl as installer
-#
-ARG SENTINEL_VERSION=1.8.8
-#
-#RUN set -x \
-#    && curl -SL --output /home/sentinel-dashboard.jar https://github.com/alibaba/Sentinel/releases/download/${SENTINEL_VERSION}/sentinel-dashboard-${SENTINEL_VERSION}.jar
-COPY ./target/*.jar /home/sentinel-dashboard.jar
-#
-FROM openjdk:17-jdk-slim
-#
-## copy sentinel jar
-COPY --from=installer ["/home/sentinel-dashboard.jar", "/home/sentinel-dashboard.jar"]
-#
-ENV JAVA_OPTS '-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858'
-#
-RUN chmod -R +x /home/sentinel-dashboard.jar
-#
-EXPOSE 8858
-#
-CMD java ${JAVA_OPTS} -jar /home/sentinel-dashboard.jar
+# Build stage
+FROM maven:3.8.6-openjdk-8-slim AS build
+WORKDIR /app
 
+# Copy pom.xml and source code
+COPY pom.xml .
+COPY src ./src
+
+# Build the application
+RUN mvn clean package -DskipTests
+
+# Find the built jar (excluding original) and rename it for easier copying
+RUN find target -maxdepth 1 -name "*.jar" ! -name "*.original" -exec cp {} app.jar \;
+
+# Run stage
+FROM openjdk:8-jre-slim
+WORKDIR /app
+
+# Copy the jar from build stage
+COPY --from=build /app/app.jar sentinel-dashboard.jar
+
+# Set environment variables
+ENV JAVA_OPTS '-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858'
+
+# Expose port
+EXPOSE 8858
+
+# Run the application
+CMD ["sh", "-c", "java $JAVA_OPTS -jar sentinel-dashboard.jar"]

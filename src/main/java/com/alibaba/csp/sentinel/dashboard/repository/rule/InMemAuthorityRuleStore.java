@@ -18,11 +18,10 @@ package com.alibaba.csp.sentinel.dashboard.repository.rule;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.AuthorityRuleEntity;
-
-import com.alibaba.nacos.common.utils.CollectionUtils;
 import org.springframework.stereotype.Component;
+
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.AuthorityRuleEntity;
+import com.alibaba.nacos.common.utils.CollectionUtils;
 
 /**
  * In-memory storage for authority rules.
@@ -42,9 +41,10 @@ public class InMemAuthorityRuleStore extends InMemoryRuleRepositoryAdapter<Autho
 
     @Override
     protected long nextId(AuthorityRuleEntity entity) {
-        if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
+        if (ids.intValue() == 0) {// 如果是重启后 且存在已有规则则赋值为最大id+1
             if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
-                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(AuthorityRuleEntity::getId)).get().getId();
+                long maxId = this.findAllByApp(entity.getApp()).stream()
+                        .max(Comparator.comparingLong(AuthorityRuleEntity::getId)).get().getId();
                 ids.set(maxId);
             }
         }
