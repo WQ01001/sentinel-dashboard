@@ -26,7 +26,6 @@ import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEn
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
@@ -56,13 +55,5 @@ public class ParamFlowRuleRedisPublisher implements DynamicRulePublisher<List<Pa
         redisTemplate.opsForValue().set(app + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX, ruleStr);
         // 数据发布
         redisTemplate.convertAndSend(app + RedisConfigUtil.RULE_PARAM_CHANNEL_PREFIX, ruleStr);
-    }
-
-    /**
-     * @return 格式化后的JSON字符串
-     */
-    private String toPrettyFormat(String json) {
-        JSONArray jsonArray = JSON.parseArray(json);
-        return JSON.toJSONString(jsonArray, true);
     }
 }
