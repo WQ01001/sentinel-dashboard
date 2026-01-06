@@ -16,11 +16,14 @@
 package com.alibaba.csp.sentinel.dashboard.repository.rule;
 
 import java.util.Comparator;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.rule.redis.RedisConfigUtil;
+import com.alibaba.csp.sentinel.dashboard.rule.redis.RedisIdGenerator;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 
 /**
@@ -29,21 +32,64 @@ import com.alibaba.nacos.common.utils.CollectionUtils;
 @Component
 public class InMemDegradeRuleStore extends InMemoryRuleRepositoryAdapter<DegradeRuleEntity> {
 
-    private static AtomicLong ids = new AtomicLong(0);
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private final RedisIdGenerator redisIdGenerator;
+
+    public InMemDegradeRuleStore(RedisTemplate<String, Object> redisTemplate, RedisIdGenerator redisIdGenerator) {
+        this.redisTemplate = redisTemplate;
+        this.redisIdGenerator = redisIdGenerator;
+    }
 
     @Override
     protected long nextId() {
-        return ids.incrementAndGet();
+        return redisIdGenerator.nextId("rims" + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX);
     }
 
     @Override
     protected long nextId(DegradeRuleEntity entity) {
-        if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
-            if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
-                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(DegradeRuleEntity::getId)).get().getId();
-                ids.set(maxId);
+        // 为每个app构造一个唯一的Redis key
+        String redisKey = entity.getApp() + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX;
+        // 检查是否需要初始化
+        Boolean hasKey = redisTemplate.hasKey(redisKey);
+        if (Boolean.FALSE.equals(hasKey)) {
+            // 如果key不存在，且已有规则，则初始化为最大id
+            List<DegradeRuleEntity> existingRules = this.findAllByApp(entity.getApp());
+            if (!CollectionUtils.isEmpty(existingRules)) {
+                long maxId = existingRules.stream()
+                        .max(Comparator.comparingLong(DegradeRuleEntity::getId))
+                        .get()
+                        .getId();
+                // 设置初始值
+                redisTemplate.opsForValue().set(redisKey, maxId);
             }
         }
-        return ids.incrementAndGet();
+
+        // 使用 Optional 处理可能的空值
+        Long newId = redisTemplate.opsForValue().increment(redisKey, 1);
+        if (newId == null) {
+            throw new IllegalStateException("Failed to generate new ID from Redis");
+        }
+
+        return newId;
     }
+
+    // private static AtomicLong ids = new AtomicLong(0);
+
+    // @Override
+    // protected long nextId() {
+    // return ids.incrementAndGet();
+    // }
+
+    // @Override
+    // protected long nextId(DegradeRuleEntity entity) {
+    // if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
+    // if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
+    // long maxId =
+    // this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(DegradeRuleEntity::getId)).get().getId();
+    // ids.set(maxId);
+    // }
+    // }
+    // return ids.incrementAndGet();
+    // }
 }

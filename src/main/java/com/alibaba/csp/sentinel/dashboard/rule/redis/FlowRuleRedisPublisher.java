@@ -15,23 +15,18 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.redis;
 
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
-import com.alibaba.csp.sentinel.datasource.Converter;
-import com.alibaba.csp.sentinel.util.AssertUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.nacos.api.config.ConfigService;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.util.List;
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
  * @author Eric Zhao
@@ -39,7 +34,6 @@ import java.util.List;
  */
 @Component("flowRuleRedisPublisher")
 public class FlowRuleRedisPublisher implements DynamicRulePublisher<List<FlowRuleEntity>> {
-
 
     private final Logger logger = LoggerFactory.getLogger(FlowRuleRedisPublisher.class);
 
@@ -56,10 +50,10 @@ public class FlowRuleRedisPublisher implements DynamicRulePublisher<List<FlowRul
             return;
         }
         logger.info("flow rule, app name: {}, rules size: {}", app, rules.size());
-//        String ruleStr = JSON.toJSONString(rules);
+        // String ruleStr = JSON.toJSONString(rules);
         String ruleStr = JSON.toJSONString(rules, SerializerFeature.DisableCircularReferenceDetect);
         // 数据存储
-        redisTemplate.opsForValue().set(app + RedisConfigUtil.RULE_FLOW_PREFIX, ruleStr);
+        redisTemplate.opsForValue().set(app + RedisConfigUtil.FLOW_DATA_ID_POSTFIX, ruleStr);
         // 数据发布
         redisTemplate.convertAndSend(app + RedisConfigUtil.RULE_FLOW_CHANNEL_PREFIX, ruleStr);
     }

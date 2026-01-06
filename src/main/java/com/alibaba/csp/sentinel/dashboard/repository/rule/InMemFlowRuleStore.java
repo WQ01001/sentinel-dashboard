@@ -15,18 +15,17 @@
  */
 package com.alibaba.csp.sentinel.dashboard.repository.rule;
 
+import java.util.Comparator;
+import java.util.List;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.redis.RedisConfigUtil;
 import com.alibaba.csp.sentinel.dashboard.rule.redis.RedisIdGenerator;
 import com.alibaba.csp.sentinel.slots.block.flow.ClusterFlowConfig;
 import com.alibaba.nacos.common.utils.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Store {@link FlowRuleEntity} in memory.
@@ -36,26 +35,30 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class InMemFlowRuleStore extends InMemoryRuleRepositoryAdapter<FlowRuleEntity> {
 
-
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public InMemFlowRuleStore(RedisTemplate<String, Object> redisTemplate) {
+    private final RedisIdGenerator redisIdGenerator;
+
+    public InMemFlowRuleStore(RedisTemplate<String, Object> redisTemplate, RedisIdGenerator redisIdGenerator) {
         this.redisTemplate = redisTemplate;
+        this.redisIdGenerator = redisIdGenerator;
     }
 
     @Override
     protected long nextId() {
-        Long newId = redisTemplate.opsForValue().increment(RedisConfigUtil.RULE_FLOW_ID_KEY, 1);
-        if (newId == null) {
-            throw new IllegalStateException("Failed to generate new ID from Redis");
-        }
-        return newId;
+        // Long newId =
+        // redisTemplate.opsForValue().increment(RedisConfigUtil.RULE_FLOW_ID_KEY, 1);
+        // if (newId == null) {
+        // throw new IllegalStateException("Failed to generate new ID from Redis");
+        // }
+        // return newId;
+        return redisIdGenerator.nextId("rims" + RedisConfigUtil.FLOW_DATA_ID_POSTFIX);
     }
 
     @Override
     protected long nextId(FlowRuleEntity entity) {
         // 为每个app构造一个唯一的Redis key
-        String redisKey = RedisConfigUtil.RULE_FLOW_ID_KEY + entity.getApp();
+        String redisKey = entity.getApp() + RedisConfigUtil.FLOW_DATA_ID_POSTFIX;
         // 检查是否需要初始化
         Boolean hasKey = redisTemplate.hasKey(redisKey);
         if (Boolean.FALSE.equals(hasKey)) {
@@ -80,24 +83,25 @@ public class InMemFlowRuleStore extends InMemoryRuleRepositoryAdapter<FlowRuleEn
         return newId;
     }
 
-//    private static AtomicLong ids = new AtomicLong(0);
+    // private static AtomicLong ids = new AtomicLong(0);
 
     //
-//    @Override
-//    protected long nextId() {
-//        return ids.incrementAndGet();
-//    }
-//
-//    @Override
-//    protected long nextId(FlowRuleEntity entity) {
-//        if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
-//            if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
-//                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(FlowRuleEntity::getId)).get().getId();
-//                ids.set(maxId);
-//            }
-//        }
-//        return ids.incrementAndGet();
-//    }
+    // @Override
+    // protected long nextId() {
+    // return ids.incrementAndGet();
+    // }
+    //
+    // @Override
+    // protected long nextId(FlowRuleEntity entity) {
+    // if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
+    // if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
+    // long maxId =
+    // this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(FlowRuleEntity::getId)).get().getId();
+    // ids.set(maxId);
+    // }
+    // }
+    // return ids.incrementAndGet();
+    // }
 
     @Override
     protected FlowRuleEntity preProcess(FlowRuleEntity entity) {

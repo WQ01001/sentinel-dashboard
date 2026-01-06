@@ -1,23 +1,9 @@
-# Build stage
-FROM maven:3.8.6-openjdk-8-slim AS build
-WORKDIR /app
-
-# Copy pom.xml and source code
-COPY pom.xml .
-COPY src ./src
-
-# Build the application
-RUN mvn clean package -DskipTests
-
-# Find the built jar (excluding original) and rename it for easier copying
-RUN find target -maxdepth 1 -name "*.jar" ! -name "*.original" -exec cp {} app.jar \;
-
 # Run stage
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Copy the jar from build stage
-COPY --from=build /app/app.jar sentinel-dashboard.jar
+# Copy the jar from local target directory
+COPY target/sentinel-dashboard.jar sentinel-dashboard.jar
 
 # Set environment variables
 ENV JAVA_OPTS '-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858'

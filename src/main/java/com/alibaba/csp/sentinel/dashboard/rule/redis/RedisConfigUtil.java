@@ -21,12 +21,13 @@ package com.alibaba.csp.sentinel.dashboard.rule.redis;
  */
 public final class RedisConfigUtil {
 
+    // 最终规则是存储的key
     public static final String GROUP_ID = "SENTINEL_GROUP";
-    //  流控规则
+    // 流控规则
     public static final String FLOW_DATA_ID_POSTFIX = "-flow-rules";
-    //  热点规则
+    // 热点规则
     public static final String PARAM_FLOW_DATA_ID_POSTFIX = "-param-rules";
-    //    降级规则
+    // 降级规则
     public static final String DEGRADE_DATA_ID_POSTFIX = "-degrade-rules";
 
     public static final String CLUSTER_MAP_DATA_ID_POSTFIX = "-cluster-map";
@@ -42,16 +43,16 @@ public final class RedisConfigUtil {
     public static final String SERVER_FLOW_CONFIG_DATA_ID_POSTFIX = "-cs-flow-config";
     public static final String SERVER_NAMESPACE_SET_DATA_ID_POSTFIX = "-cs-namespace-set";
 
-    //        Redis
+    // Redis
     // 最终规则是存储的key
-    public static final String RULE_FLOW_PREFIX = ":rule:flow";
-    public static final String RULE_PARAM_PREFIX = ":rule:param";
-    public static final String RULE_DEGRADE_PREFIX = ":rule:degrade";
+    // public static final String RULE_FLOW_PREFIX = ":rule:flow";
+    // public static final String RULE_PARAM_PREFIX = ":rule:param";
+    // public static final String RULE_DEGRADE_PREFIX = ":rule:degrade";
 
     // Redis的订阅发布功能，需要一个通道
-    public static final String RULE_FLOW_CHANNEL_PREFIX = ":channel:flow";
-    public static final String RULE_PARAM_CHANNEL_PREFIX = ":channel:param";
-    public static final String RULE_DEGRADE_CHANNEL_PREFIX = ":channel:degrade";
+    public static final String RULE_FLOW_CHANNEL_PREFIX = "-flow-rules-channel";
+    public static final String RULE_PARAM_CHANNEL_PREFIX = "-param-rules-channel";
+    public static final String RULE_DEGRADE_CHANNEL_PREFIX = "-degrade-rules-channel";
 
     // 每一个规则都需要唯一id，基于Redis生成id
     public static final String RULE_FLOW_ID_KEY = "sentinel:id:flow";

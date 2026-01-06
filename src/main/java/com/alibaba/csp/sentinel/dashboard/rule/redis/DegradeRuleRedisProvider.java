@@ -1,23 +1,16 @@
 package com.alibaba.csp.sentinel.dashboard.rule.redis;
 
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
-import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
-import com.alibaba.csp.sentinel.datasource.Converter;
-import com.alibaba.csp.sentinel.util.AssertUtil;
-import com.alibaba.csp.sentinel.util.StringUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.nacos.api.config.ConfigService;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
+import com.alibaba.csp.sentinel.util.AssertUtil;
+import com.alibaba.fastjson.JSON;
 
 @Component("degradeRuleRedisProvider")
 public class DegradeRuleRedisProvider implements DynamicRuleProvider<List<DegradeRuleEntity>> {
@@ -32,7 +25,7 @@ public class DegradeRuleRedisProvider implements DynamicRuleProvider<List<Degrad
     public List<DegradeRuleEntity> getRules(String appName) throws Exception {
 
         AssertUtil.notEmpty(appName, "app name cannot be empty");
-        String ruleStr = (String) redisTemplate.opsForValue().get(appName + RedisConfigUtil.RULE_DEGRADE_PREFIX);
+        String ruleStr = (String) redisTemplate.opsForValue().get(appName + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX);
         if (StringUtils.isEmpty(ruleStr)) {
             return Collections.emptyList();
         }

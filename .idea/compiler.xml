@@ -6,7 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="sentinel-dashboard" />
+      </profile>
+      <profile name="Annotation profile for sentinel-dashboard" enabled="true">
+        <sourceOutputDir name="../generated-sources/annotations" />
+        <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
+        <module name="sentinel-dashboard.test" />
+        <module name="sentinel-dashboard.main" />
       </profile>
     </annotationProcessing>
   </component>

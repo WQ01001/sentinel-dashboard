@@ -15,21 +15,19 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.redis;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRulePublisher;
-import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.nacos.api.config.ConfigService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Eric Zhao
@@ -42,11 +40,9 @@ public class ParamFlowRuleRedisPublisher implements DynamicRulePublisher<List<Pa
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-
     public ParamFlowRuleRedisPublisher(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
-
 
     @Override
     public void publish(String app, List<ParamFlowRuleEntity> rules) throws Exception {
@@ -57,7 +53,7 @@ public class ParamFlowRuleRedisPublisher implements DynamicRulePublisher<List<Pa
         logger.info("param rule, app name: {}, rules size: {}", app, rules.size());
         String ruleStr = JSON.toJSONString(rules, SerializerFeature.DisableCircularReferenceDetect);
         // 数据存储
-        redisTemplate.opsForValue().set(app + RedisConfigUtil.RULE_PARAM_PREFIX, ruleStr);
+        redisTemplate.opsForValue().set(app + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX, ruleStr);
         // 数据发布
         redisTemplate.convertAndSend(app + RedisConfigUtil.RULE_PARAM_CHANNEL_PREFIX, ruleStr);
     }

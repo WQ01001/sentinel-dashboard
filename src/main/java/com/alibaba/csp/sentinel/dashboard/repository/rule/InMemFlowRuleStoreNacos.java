@@ -20,16 +20,14 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.slots.block.flow.ClusterFlowConfig;
-
 import com.alibaba.nacos.common.utils.CollectionUtils;
-import org.springframework.stereotype.Component;
 
 /**
  * Store {@link FlowRuleEntity} in memory.
  *
  * @author leyou
  */
-//@Component
+// @Component
 public class InMemFlowRuleStoreNacos extends InMemoryRuleRepositoryAdapter<FlowRuleEntity> {
 
     private static AtomicLong ids = new AtomicLong(0);
@@ -41,9 +39,10 @@ public class InMemFlowRuleStoreNacos extends InMemoryRuleRepositoryAdapter<FlowR
 
     @Override
     protected long nextId(FlowRuleEntity entity) {
-        if (ids.intValue() == 0) {//如果是重启后 且存在已有规则则赋值为最大id+1
+        if (ids.intValue() == 0) {// 如果是重启后 且存在已有规则则赋值为最大id+1
             if (!CollectionUtils.isEmpty(this.findAllByApp(entity.getApp()))) {
-                long maxId = this.findAllByApp(entity.getApp()).stream().max(Comparator.comparingLong(FlowRuleEntity::getId)).get().getId();
+                long maxId = this.findAllByApp(entity.getApp()).stream()
+                        .max(Comparator.comparingLong(FlowRuleEntity::getId)).get().getId();
                 ids.set(maxId);
             }
         }
