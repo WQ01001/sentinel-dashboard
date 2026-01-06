@@ -2,7 +2,7 @@ var app = angular.module('sentinelDashboardApp');
 
 app.controller('MetricCtl', ['$scope', '$stateParams', 'MetricService', '$interval', '$timeout',
   function ($scope, $stateParams, MetricService, $interval, $timeout) {
-	$scope.charts = [];
+    $scope.charts = [];
     $scope.endTime = new Date();
     $scope.startTime = new Date();
     $scope.startTime.setMinutes($scope.endTime.getMinutes() - 30);
@@ -60,9 +60,9 @@ app.controller('MetricCtl', ['$scope', '$stateParams', 'MetricService', '$interv
     });
     $scope.initAllChart = function () {
       //revoke useless charts positively
-      while($scope.charts.length > 0) {
-      	let chart = $scope.charts.pop();
-      	chart.destroy();
+      while ($scope.charts.length > 0) {
+        let chart = $scope.charts.pop();
+        chart.destroy();
       }
       $.each($scope.metrics, function (idx, metric) {
         if (idx == $scope.metrics.length - 1) {
@@ -95,14 +95,14 @@ app.controller('MetricCtl', ['$scope', '$stateParams', 'MetricService', '$interv
           min: 0,
           max: maxQps,
           fine: true,
-          alias: '通过 QPS'
+          alias: 'PASS QPS'
           // max: 10
         });
         chart.scale('blockQps', {
           min: 0,
           max: maxQps,
           fine: true,
-          alias: '拒绝 QPS',
+          alias: 'BLOCK QPS',
         });
         chart.scale('rt', {
           min: 0,
@@ -231,13 +231,13 @@ app.controller('MetricCtl', ['$scope', '$stateParams', 'MetricService', '$interv
         if (curTime > lastTime + 1) {
           for (var j = lastTime + 1; j < curTime; j++) {
             filledData.push({
-                "timestamp": j * 1000,
-                "passQps": 0,
-                "blockQps": 0,
-                "successQps": 0,
-                "exception": 0,
-                "rt": 0,
-                "count": 0
+              "timestamp": j * 1000,
+              "passQps": 0,
+              "blockQps": 0,
+              "successQps": 0,
+              "exception": 0,
+              "rt": 0,
+              "count": 0
             })
           }
         }

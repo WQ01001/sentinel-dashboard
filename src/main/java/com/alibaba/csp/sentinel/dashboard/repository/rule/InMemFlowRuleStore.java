@@ -18,7 +18,7 @@ package com.alibaba.csp.sentinel.dashboard.repository.rule;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
@@ -35,30 +35,24 @@ import com.alibaba.nacos.common.utils.CollectionUtils;
 @Component
 public class InMemFlowRuleStore extends InMemoryRuleRepositoryAdapter<FlowRuleEntity> {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
 
     private final RedisIdGenerator redisIdGenerator;
 
-    public InMemFlowRuleStore(RedisTemplate<String, Object> redisTemplate, RedisIdGenerator redisIdGenerator) {
+    public InMemFlowRuleStore(StringRedisTemplate redisTemplate, RedisIdGenerator redisIdGenerator) {
         this.redisTemplate = redisTemplate;
         this.redisIdGenerator = redisIdGenerator;
     }
 
     @Override
     protected long nextId() {
-        // Long newId =
-        // redisTemplate.opsForValue().increment(RedisConfigUtil.RULE_FLOW_ID_KEY, 1);
-        // if (newId == null) {
-        // throw new IllegalStateException("Failed to generate new ID from Redis");
-        // }
-        // return newId;
-        return redisIdGenerator.nextId("rims" + RedisConfigUtil.FLOW_DATA_ID_POSTFIX);
+        return redisIdGenerator.nextId("rims" + RedisConfigUtil.FLOW_DATA_ID_POSTFIX + "-id");
     }
 
     @Override
     protected long nextId(FlowRuleEntity entity) {
         // 为每个app构造一个唯一的Redis key
-        String redisKey = entity.getApp() + RedisConfigUtil.FLOW_DATA_ID_POSTFIX;
+        String redisKey = entity.getApp() + RedisConfigUtil.FLOW_DATA_ID_POSTFIX + "-id";
         // 检查是否需要初始化
         Boolean hasKey = redisTemplate.hasKey(redisKey);
         if (Boolean.FALSE.equals(hasKey)) {
@@ -70,7 +64,7 @@ public class InMemFlowRuleStore extends InMemoryRuleRepositoryAdapter<FlowRuleEn
                         .get()
                         .getId();
                 // 设置初始值
-                redisTemplate.opsForValue().set(redisKey, maxId);
+                redisTemplate.opsForValue().set(redisKey, String.valueOf(maxId));
             }
         }
 

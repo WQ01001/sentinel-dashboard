@@ -3,8 +3,9 @@
     <span style="font-size: 30px;font-weight: bold;">{{app}}</span>
   </div>
   <div class="col-md-6">
-    <button class="btn btn-default-inverse" style="float: right; margin-right: 10px;" ng-disabled="!macInputModel" ng-click="addNewRule()">
-      <i class="fa fa-plus"></i>&nbsp;&nbsp;新增系统规则</button>
+    <button class="btn btn-default-inverse" style="float: right; margin-right: 10px;" ng-disabled="!macInputModel"
+      ng-click="addNewRule()">
+      <i class="fa fa-plus"></i>&nbsp;&nbsp;Add System Rule</button>
   </div>
 </div>
 
@@ -15,13 +16,14 @@
     <div class="col-md-12">
       <div class="card">
         <div class="inputs-header">
-          <span class="brand" style="font-size: 13px;">系统规则</span>
-          <!--<button class="btn btn-danger" style="float: right;margin-right: 10px;height: 30px;font-size: 12px;" ng-click="disableAll()">全部禁用</button>-->
-          <button class="btn btn-primary" style="float: right; margin-right: 10px; height: 30px;font-size: 12px;" ng-click="getMachineRules()">刷新</button>
-          <input class="form-control witdh-200" placeholder="关键字" ng-model="searchKey">
+          <span class="brand" style="font-size: 13px;">System Rules</span>
+          <!--<button class="btn btn-danger" style="float: right;margin-right: 10px;height: 30px;font-size: 12px;" ng-click="disableAll()">Disable All</button>-->
+          <button class="btn btn-primary" style="float: right; margin-right: 10px; height: 30px;font-size: 12px;"
+            ng-click="getMachineRules()">Refresh</button>
+          <input class="form-control witdh-200" placeholder="Keyword" ng-model="searchKey">
           <div class="control-group" style="float:right;margin-right: 10px;margin-bottom: -10px;">
-            <selectize id="gsInput" class="selectize-input-200" config="macsInputConfig" options="macsInputOptions" ng-model="macInputModel"
-              placeholder="机器"></selectize>
+            <selectize id="gsInput" class="selectize-input-200" config="macsInputConfig" options="macsInputOptions"
+              ng-model="macInputModel" placeholder="Machine"></selectize>
           </div>
         </div>
 
@@ -31,25 +33,25 @@
             <thead>
               <tr style="background: #F3F5F7;">
                 <td style="width: 40%;">
-                  阈值类型
+                  Threshold Type
                 </td>
                 <td style="width: 40%;">
-                  单机阈值
+                  Threshold
                 </td>
                 <td style="width: 12%;">
-                  操作
+                  Action
                 </td>
               </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="rule in rules | filter : searchKey | itemsPerPage: rulesPageConfig.pageSize " current-page="rulesPageConfig.currentPageIndex"
-                pagination-id="entriesPagination">
+              <tr dir-paginate="rule in rules | filter : searchKey | itemsPerPage: rulesPageConfig.pageSize "
+                current-page="rulesPageConfig.currentPageIndex" pagination-id="entriesPagination">
                 <td style="word-wrap:break-word;word-break:break-all;">
-                  <span ng-if="rule.highestSystemLoad >= 0">系统 load（自适应）</span>
-                  <span ng-if="rule.avgRt >= 0">平均 RT</span>
-                  <span ng-if="rule.maxThread >= 0">并发数</span>
-                  <span ng-if="rule.qps >= 0">入口 QPS</span>
-                  <span ng-if="rule.highestCpuUsage >= 0">CPU 使用率</span>
+                  <span ng-if="rule.highestSystemLoad >= 0">System Load (Adaptive)</span>
+                  <span ng-if="rule.avgRt >= 0">Average RT</span>
+                  <span ng-if="rule.maxThread >= 0">Thread Count</span>
+                  <span ng-if="rule.qps >= 0">Inbound QPS</span>
+                  <span ng-if="rule.highestCpuUsage >= 0">CPU Usage</span>
                 </td>
                 <td style="word-wrap:break-word;word-break:break-all;">
                   <span ng-if="rule.highestSystemLoad >= 0">{{rule.highestSystemLoad}}</span>
@@ -59,8 +61,10 @@
                   <span ng-if="rule.highestCpuUsage >= 0">{{rule.highestCpuUsage}}</span>
                 </td>
                 <td>
-                  <button class="btn btn-xs btn-default" type="button" ng-click="editRule(rule)" style="font-size: 12px; height:25px;">编辑</button>
-                  <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(rule)" style="font-size: 12px; height:25px;">删除</button>
+                  <button class="btn btn-xs btn-default" type="button" ng-click="editRule(rule)"
+                    style="font-size: 12px; height:25px;">Edit</button>
+                  <button class="btn btn-xs btn-default" type="button" ng-click="deleteRule(rule)"
+                    style="font-size: 12px; height:25px;">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -68,16 +72,16 @@
         </div>
         <!-- .card-body -->
         <div class="pagination-footer">
-          <dir-pagination-controls boundary-links="true" template-url="app/views/pagination.tpl.html" pagination-id="entriesPagination"
-            on-page-change="">
+          <dir-pagination-controls boundary-links="true" template-url="app/views/pagination.tpl.html"
+            pagination-id="entriesPagination" on-page-change="">
           </dir-pagination-controls>
           <div class="tools" style="">
-            <span>共 {{rulesPageConfig.totalCount}} 条记录, </span>
+            <span>Total {{rulesPageConfig.totalCount}} records, </span>
             <span>
-              每页
-              <input class="form-control" ng-model="rulesPageConfig.pageSize"> 条记录,
+              Per page
+              <input class="form-control" ng-model="rulesPageConfig.pageSize"> records,
             </span>
-            <span>第 {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}} 页</span>
+            <span>Page {{rulesPageConfig.currentPageIndex}} / {{rulesPageConfig.totalPage}}</span>
           </div>
           <!-- .tools -->
         </div>

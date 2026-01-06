@@ -18,7 +18,7 @@ package com.alibaba.csp.sentinel.dashboard.repository.rule;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
@@ -32,24 +32,24 @@ import com.alibaba.nacos.common.utils.CollectionUtils;
 @Component
 public class InMemDegradeRuleStore extends InMemoryRuleRepositoryAdapter<DegradeRuleEntity> {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
 
     private final RedisIdGenerator redisIdGenerator;
 
-    public InMemDegradeRuleStore(RedisTemplate<String, Object> redisTemplate, RedisIdGenerator redisIdGenerator) {
+    public InMemDegradeRuleStore(StringRedisTemplate redisTemplate, RedisIdGenerator redisIdGenerator) {
         this.redisTemplate = redisTemplate;
         this.redisIdGenerator = redisIdGenerator;
     }
 
     @Override
     protected long nextId() {
-        return redisIdGenerator.nextId("rims" + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX);
+        return redisIdGenerator.nextId("rims" + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX + "-id");
     }
 
     @Override
     protected long nextId(DegradeRuleEntity entity) {
         // 为每个app构造一个唯一的Redis key
-        String redisKey = entity.getApp() + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX;
+        String redisKey = entity.getApp() + RedisConfigUtil.DEGRADE_DATA_ID_POSTFIX + "-id";
         // 检查是否需要初始化
         Boolean hasKey = redisTemplate.hasKey(redisKey);
         if (Boolean.FALSE.equals(hasKey)) {
@@ -61,7 +61,7 @@ public class InMemDegradeRuleStore extends InMemoryRuleRepositoryAdapter<Degrade
                         .get()
                         .getId();
                 // 设置初始值
-                redisTemplate.opsForValue().set(redisKey, maxId);
+                redisTemplate.opsForValue().set(redisKey, String.valueOf(maxId));
             }
         }
 

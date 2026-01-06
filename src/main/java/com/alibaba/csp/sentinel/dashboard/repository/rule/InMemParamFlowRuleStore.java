@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
@@ -37,24 +37,24 @@ public class InMemParamFlowRuleStore extends InMemoryRuleRepositoryAdapter<Param
 
     // private static AtomicLong ids = new AtomicLong(0);
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
 
     private final RedisIdGenerator redisIdGenerator;
 
-    public InMemParamFlowRuleStore(RedisTemplate<String, Object> redisTemplate, RedisIdGenerator redisIdGenerator) {
+    public InMemParamFlowRuleStore(StringRedisTemplate redisTemplate, RedisIdGenerator redisIdGenerator) {
         this.redisTemplate = redisTemplate;
         this.redisIdGenerator = redisIdGenerator;
     }
 
     @Override
     protected long nextId() {
-        return redisIdGenerator.nextId("rims" + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX);
+        return redisIdGenerator.nextId("rims" + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX + "-id");
     }
 
     @Override
     protected long nextId(ParamFlowRuleEntity entity) {
         // 为每个app构造一个唯一的Redis key
-        String redisKey = entity.getApp() + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX;
+        String redisKey = entity.getApp() + RedisConfigUtil.PARAM_FLOW_DATA_ID_POSTFIX + "-id";
         // 检查是否需要初始化
         Boolean hasKey = redisTemplate.hasKey(redisKey);
         if (Boolean.FALSE.equals(hasKey)) {
@@ -66,7 +66,7 @@ public class InMemParamFlowRuleStore extends InMemoryRuleRepositoryAdapter<Param
                         .get()
                         .getId();
                 // 设置初始值
-                redisTemplate.opsForValue().set(redisKey, maxId);
+                redisTemplate.opsForValue().set(redisKey, String.valueOf(maxId));
             }
         }
 
