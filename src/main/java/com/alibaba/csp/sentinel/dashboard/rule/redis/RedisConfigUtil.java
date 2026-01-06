@@ -35,13 +35,14 @@ public final class RedisConfigUtil {
     /**
      * cc for `cluster-client`
      */
-    public static final String CLIENT_CONFIG_DATA_ID_POSTFIX = "-cc-config";
+    public static final String CLIENT_CONFIG_DATA_ID_POSTFIX = "-cluster-client-config";
+    public static final String CLIENT_ASSIGN_CONFIG_DATA_ID_POSTFIX = "-cluster-client-assign-config";
     /**
      * cs for `cluster-server`
      */
-    public static final String SERVER_TRANSPORT_CONFIG_DATA_ID_POSTFIX = "-cs-transport-config";
-    public static final String SERVER_FLOW_CONFIG_DATA_ID_POSTFIX = "-cs-flow-config";
-    public static final String SERVER_NAMESPACE_SET_DATA_ID_POSTFIX = "-cs-namespace-set";
+    public static final String SERVER_TRANSPORT_CONFIG_DATA_ID_POSTFIX = "-cluster-server-transport-config";
+    public static final String SERVER_FLOW_CONFIG_DATA_ID_POSTFIX = "-cluster-server-flow-config";
+    public static final String SERVER_NAMESPACE_SET_DATA_ID_POSTFIX = "-cluster-server-namespace-set";
 
     // Redis
     // 最终规则是存储的key
